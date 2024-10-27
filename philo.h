@@ -1,36 +1,45 @@
-#ifndef PHILO
-#define PHILO
+#ifndef PHILO_H
+#define PHILO_H
 
-#include <stdlib.h>
 #include <pthread.h>
 #include <unistd.h>
+#include <stdlib.h>
 #include <stdio.h>
+#include <sys/time.h>
+#include <limits.h>
+#include <string.h>
+#include <stdlib.h>
 
-typedef struct s_data
+
+typedef struct t_monitore
 {
-    long number_of_philosophers;
-    long time_to_die;
-    long time_to_eat;
-    long time_to_sleep;
-    long number_of_times_each_philosopher_must_eat;
-}    t_data;
+    size_t  nb_filo;
+    size_t  t_die;
+    size_t  t_eat;
+    size_t  t_sleep;
+    size_t  nb_must_eating;
+    size_t  s_time;
+    pthread_mutex_t *forks;
+    pthread_mutex_t is_using;
+    int     is_stop;
+}   t_monitore;
 
-typedef  struct s_philo
+typedef struct s_filo
 {
-    t_data  *data;
-    int      id;
-    int      last_meal;
-} t_philo;
+    int     id_philo;
+    pthread_t   p_thread;
+    size_t  last_eating;
+    pthread_mutex_t *f_fork;
+    pthread_mutex_t *s_fork;
+    t_monitore  *monitore;
+    struct s_filo *next;
+}   t_filo;
 
-// int ft_eating();
-// int ft_thinking();
-// int ft_sleeping();
-// int ft_check_death();
-// int ft_check_eat();
-// int ft_init_philo(t_philo *philo, int i);
-// int ft_init_data(t_data *data, int argc, char **argv);
-// int ft_is_alive(t_philo *philo);
-// int ft_is_dead(t_philo *philo);
-// int ft_start_run();
+// -------------> Function <---------------------
 
+// void  error_msg(int code, t_monitore *mn);
+t_monitore  *ft_check_args(int ac, char **av);
+t_monitore *ft_init_monitore(int ac, char **av);
+// void  error_msg(int code, t_monitore *mn);
+// size_t  get_current_time();
 #endif
