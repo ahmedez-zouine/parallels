@@ -1,74 +1,87 @@
 #include "philo.h"
 
-int check_isdisgit(char *str)
+void ft_error_msg(int code, int codestatus)
 {
-    int i = 0;
-    while (str[i] != '\0')
-    {
-        if (str[i] < '0' || str[i] > '9')
-        return 0;
-        i++;
-    }   
-    return 1;
+	if (code == 0)
+		ft_putstr_fd("Malloc  failed\n", 2);
+	if  (code == 1)
+		ft_putstr_fd("Error: Invalid argument\n", 2);
+	if  (code == 2)
+		ft_putstr_fd("Error: Invalid Value of arguments\n", 2);
+	if (codestatus != -1)
+		exit(codestatus);
 }
 
-long str_to_long(char *str)
+void ft_check_args(int argc, char **av)
 {
-    long result = 0;
-    int j = 0;
-    while (str[j] == ' ' && str[j] != '\0')
-        j++;
-    while (str[j])
-    {
-        result = result * 10 + (str[j] -  '0');
-        j++;      
-    }
-    return result;
+	int nb;
+	int i;
+
+	if (argc < 5 || argc > 6)
+		ft_error_msg(1, 2);
+	i = 1;
+	while (i < argc)
+	{
+		nb = atoi(av[i]);
+		printf("args[%d]--> %d\n", i, nb);
+		if (i == 1 && (nb <= 0 || nb >= MAX_PHILO))
+			ft_error_msg(2, 2);
+		else if (nb == 5 && (nb < 0 || nb > INT_MAX))
+			ft_error_msg(1, 2);
+		else if (i != 1 && i != 5 && (nb < 1 || nb > INT_MAX))
+			ft_error_msg(2, 2);
+		i++;
+	}
 }
 
-int ft_init_data(t_data *data, int argc, char **argv)
+void	ft_init_forks(t_control *cnl, t_sharing *forks, int nb)
 {
-    int i = 0;
-    if(argc > i)
-    {
-        data->number_of_philosophers = str_to_long(argv[1]);
-        data->time_to_die = str_to_long(argv[2]);
-        data->time_to_eat = str_to_long(argv[3]);
-        data->time_to_sleep = str_to_long(argv[4]);
-        // if (argc > 4)
-        //     data->number_of_times_each_philosopher_must_eat = str_to_long(argv[5]);
-        // else
-        //     data->number_of_times_each_philosopher_must_eat = -1;
-    }
+	int i;
+
+	i = -1;
+	while (++i < nb)
+	{
+		if (pthread_mutex_init(&froks[i], NULL) != 0)
+			ft_destroy_all(cnl, "Mutex init Error\n", i, 1);
+	}
 }
 
-void ft_printf_data(t_data *data)
+void	ft_init_control(t_control *cnl, t_filo *file, t_sharing *froks)
 {
-    printf("number of philo %ld\n", data->number_of_philosophers);
-    printf("time to die of philo %ld\n", data->time_to_eat);
-    printf("time of eating %ld\n", data->time_to_eat);
-    printf("time of sleeping %ld\n", data->time_to_sleep);
-    if(data->number_of_times_each_philosopher_must_eat != -1)
-        printf("%ld number_of_times_each_philosopher_must_eat\n",data->number_of_times_each_philosopher_must_eat);
+	cnl->filo = filo;
+	cnl->forks = forks;
+	if (pthread_mutex_init(&cnl->console_take, NULL) != 0 || 
+			pthread_mutex_init(&cnl->meal_take) != 0 )
+		{
+			ft_destroy_all(cnl, "ERROR IN THE INIT MUTEXT Cnl\n", -1, 1);
+		}
+}
+
+void	ft_init_filo(t_control *cnl, t_filos *filo, t_sharing *froks, char **av)
+{
+	int i;
+
+	i = -1;
+	while (++i < atio(av[1]))
+	{
+		filos[i].t_times.id = i + 1;
+		filos[i].t_times.t_die = atoi(av[2]);
+		filos[i].t_times.t_eat = atoi(av[3]);
+		filos[i].t_times.t_sleep = atoi(av[4]);
+		filos[i].last_meal_take = get_current_time();
+		filos[i].date_init = get_current_time();
+		
+	}
 }
 
 int main(int argc, char **argv)
 {
-    t_philo *philo;
-    if  (argc != 5 && argc != 4)
-    {
-        printf("Error: wrong number of arguments\n");
-        return (1);
-    }
-    printf("%ld\n", str_to_long(argv[1]));
-    printf("%ld\n", str_to_long(argv[2]));
-    printf("%ld\n", str_to_long(argv[3]));
-    philo = malloc(sizeof(t_philo));
-    if (philo == NULL)
-        printf("Error malloc");
-    printf("Hello\n");
-    ft_init_data(philo->data, argc, argv);
-    printf("Words\n");
-    ft_printf_data(philo->data);
-    printf("from Me\n");
+	t_control 	cnl;
+	t_filo		filo[MAX_PHILO];
+	t_sharing	forks[MAX_PHILO];
+
+	ft_check_args(argc, argv);
+	ft_init_control(&cnl, filo, forks);
+	ft_init_forks(&cnl, forks, atio(argv[1]));
+	ft_init_filo(&cnl, filo, forks, argv);
 }

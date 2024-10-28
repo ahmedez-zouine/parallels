@@ -1,36 +1,55 @@
-#ifndef PHILO
-#define PHILO
+#ifndef PHILO_H
+#define PHILO_H
 
+#include <stdio.h>
+#include <unistd.h>
 #include <stdlib.h>
 #include <pthread.h>
-#include <unistd.h>
-#include <stdio.h>
+#include <sys/time.h>
+#include <stdlib.h>
+#include <limits.h>
 
-typedef struct s_data
+#define MAX_PHILO 200
+
+typedef	struct s_time
 {
-    long number_of_philosophers;
-    long time_to_die;
-    long time_to_eat;
-    long time_to_sleep;
-    long number_of_times_each_philosopher_must_eat;
-}    t_data;
+	size_t	t_eat;
+	size_t	t_die;
+	size_t	t_sleep;
+	size_t	last_meal_take;
+	size_t	date_init;
+}		t_time;
 
-typedef  struct s_philo
+typedef struct	s_sharing
 {
-    t_data  *data;
-    int      id;
-    int      last_meal;
-} t_philo;
+	pthread_mutex_t	*left_fork;
+	pthread_mutex_t *right_fork;
+	pthread_mutex_t *meal_take;
+	pthread_mutex_t	*console_take;
+}	t_sharing;
 
-// int ft_eating();
-// int ft_thinking();
-// int ft_sleeping();
-// int ft_check_death();
-// int ft_check_eat();
-// int ft_init_philo(t_philo *philo, int i);
-// int ft_init_data(t_data *data, int argc, char **argv);
-// int ft_is_alive(t_philo *philo);
-// int ft_is_dead(t_philo *philo);
-// int ft_start_run();
+typedef struct s_filo
+{
+	int id;
+	int	nb_filo;
+	size_t	meal_take;
+	size_t	meal_must_take;
+	pthread_t	thread_id;
+	t_time	f_times;
+	t_sharing d_share;
+} t_filo;
 
-#endif
+typedef struct s_control
+{
+	t_filo	*filo;
+	t_sharing *d_share;
+	pthread_mutex_t	console_take;
+	pthread_mutex_t meal_take;
+} t_control;
+
+
+// ---------------------- function ----------------- //
+
+void ft_error_msg(int code, int codestatus);
+void    ft_putstr_fd(char *str, int fd);
+#endif //END P
