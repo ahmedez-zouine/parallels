@@ -6,7 +6,7 @@
 /*   By: aez-zoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 21:42:52 by aez-zoui          #+#    #+#             */
-/*   Updated: 2024/11/02 21:42:53 by aez-zoui         ###   ########.fr       */
+/*   Updated: 2024/11/03 19:25:13 by aez-zoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,9 @@ void	*start_simulation(void *ptr)
 	if (philo->id % 2 == 0)
 		ft_usleep(200);
 	pthread_mutex_lock(philo->mutexes.meal_lock);
+	pthread_mutex_lock(philo->mutexes.write_lock);
 	philo->times.born_time = get_current_time();
+	pthread_mutex_unlock(philo->mutexes.write_lock);
 	philo->times.last_meal = get_current_time();
 	pthread_mutex_unlock(philo->mutexes.meal_lock);
 	while (1)

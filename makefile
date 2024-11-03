@@ -3,7 +3,7 @@ SRCS = init_data.c main.c execution.c str_utils.c
 NAME = philo
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g -pthread -fsanitize=thread
+CFLAGS = -Wall -Wextra -Werror #-g -pthread -fsanitize=thread
 OBJS=$(SRCS:.c=.o)
 
 all: $(NAME)
