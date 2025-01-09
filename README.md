@@ -14,8 +14,8 @@
 2. N3tik Example kamel:
 
 1. Initialization:
-   - Khlaqna 5 philosophers
-   - Kol wa7ed 3ndo forchetta f limn w f lisr
+   - ghadi create 5 philosophers
+   - Kol wa7ed 3ndo forchetta(fork) f limn w f lisr
    - Kolshi khasso yakol 7 marrat
 
 2. Routine:
