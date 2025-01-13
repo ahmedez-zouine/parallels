@@ -1,3 +1,5 @@
+![philos](https://miro.medium.com/v2/resize:fit:1400/format:webp/1*SgvX2GrPpDSbT21wyiYB7g.png)
+
 ```
 1. Kifash khadam l-program:
 ./philo 5 800 200 200 7
